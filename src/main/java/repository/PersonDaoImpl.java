@@ -1,31 +1,40 @@
 package repository;
 
+import lombok.extern.log4j.Log4j;
 import model.Person;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Log4j
+@Repository
+@Qualifier("personDao")
 public class PersonDaoImpl implements PersonDao {
-    public Long createUser(Person person) {
-        return null;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    public void addUser(Person person) {
+        jdbcTemplate.update("INSERT INTO persons (name, age, city) VALUES (?, ?, ?)", person.getName(), person.getAge(), person.getCity());
     }
 
-    public Person findUserById(Integer id) {
-        return null;
+    public Person findPersonById(Integer id) {
+        return (Person) jdbcTemplate.queryForObject("SELECT * FROM persons where id = ?",
+                new Object[]{id}, new BeanPropertyRowMapper(Person.class));
     }
 
-    public void updateUser(Person user) {
-
+    public void updatePerson(Person person) {
+        jdbcTemplate.update("UPDATE persons SET name = ? , age = ? , city = ? WHERE id = ?", person.getName(), person.getAge(), person.getCity());
     }
 
-    public void deleteUserByReference(Person user) {
-
+    public void deletePersonById(Integer id) {
+        jdbcTemplate.update("DELETE from persons WHERE id = ?", id);
     }
 
-    public void deleteUserById(Long id) {
-
-    }
-
-    public List<Person> getAllUsers() {
-        return null;
+    public List<Person> getAllPersons() {
+        return jdbcTemplate.query("SELECT * FROM person", new BeanPropertyRowMapper(Person.class));
     }
 }

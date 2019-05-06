@@ -5,15 +5,13 @@ import model.Person;
 import java.util.List;
 
 public interface PersonDao {
-    Long createUser(Person person);
+    void addUser(Person person);
 
-    Person findUserById(Integer id);
+    Person findPersonById(Integer id);
 
-    void updateUser(Person user);
+    void updatePerson(Person person);
 
-    void deleteUserByReference(Person user);
+    void deletePersonById(Integer id);
 
-    void deleteUserById(Long id);
-
-    List<Person> getAllUsers();
+    List<Person> getAllPersons();
 }
