@@ -1,18 +1,18 @@
-package repository;
+package service;
 
 import model.Person;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface PersonDao {
+public interface PersonService {
     void addUser(Person person);
 
-    Optional<Person> findPersonById(Integer id);
+    Optional<Person> findPersonById(Long id);
 
     void updatePerson(Person person);
 
-    void deletePersonById(Integer id);
+    void deletePersonById(Long id);
 
     List<Person> getAllPersons();
 }
