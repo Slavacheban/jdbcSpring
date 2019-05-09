@@ -24,7 +24,7 @@ import javax.persistence.Table;
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
     @InjectRandomInit(min = 600, max = 5000)
     private Integer age;

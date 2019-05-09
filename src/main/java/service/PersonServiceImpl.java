@@ -18,13 +18,13 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void addUser(Person person) {
+    public void addPerson(Person person) {
         repository.save(person);
     }
 
     @Override
-    public Optional<Person> findPersonById(Long id) {
-        return Optional.ofNullable(repository.getOne(id));
+    public Person findPersonById(Long id) {
+        return repository.getOne(id);
     }
 
     @Override

@@ -1,28 +1,65 @@
 package service;
 
-import org.junit.jupiter.api.Test;
+import model.Person;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
 
-class PersonServiceImplTest {
+
+@RunWith(Arquillian.class)
+public class PersonServiceImplTest {
+    @Deployment
+    public static JavaArchive createDeployment() {
+        return ShrinkWrap.create(JavaArchive.class)
+                .addClass(PersonServiceImpl.class)
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+    @Autowired
+    private PersonService service;
 
     @Test
-    void addUser() {
+    public void addPerson() {
+        Person person = new Person().setAge(25).setCity("Odessa").setName("Slava");
+        service.addPerson(person);
+        Assert.assertEquals(person, service.findPersonById(person.getId()));
     }
 
     @Test
-    void findPersonById() {
+    public void findPersonById() {
+        Person person = new Person().setAge(25).setCity("Odessa").setName("Slava");
+        service.addPerson(person);
+        Assert.assertEquals(person, service.findPersonById(person.getId()));
     }
 
     @Test
-    void updatePerson() {
+    public void updatePerson() {
+        Person person = new Person().setAge(25).setCity("Odessa").setName("Slava");
+        service.addPerson(person);
+        person.setAge(26).setCity("Kyev");
+        service.updatePerson(person);
+        Assert.assertEquals(person, service.findPersonById(person.getId()));
     }
 
     @Test
-    void deletePersonById() {
+    public void deletePersonById() {
+        Person person = new Person().setAge(25).setCity("Odessa").setName("Slava");
+        service.addPerson(person);
+        service.deletePersonById(person.getId());
+        Assert.assertFalse(service.getAllPersons().contains(person));
     }
 
     @Test
-    void getAllPersons() {
+    public void getAllPersons() {
+        Person person = new Person().setAge(25).setCity("Odessa").setName("Slava");
+        service.addPerson(person);
+        Assert.assertEquals(service.getAllPersons(), new ArrayList<>().add(person));
     }
 }
